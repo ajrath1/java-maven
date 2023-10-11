@@ -1,6 +1,15 @@
-# Use the official Nginx base image
-FROM nginx:alpine
+FROM nginx:latest
 
-# Copy your HTML file to the default Nginx web root
-COPY welcome.html /usr/share/nginx/html/welcome.html
+# Remove the default Nginx welcome page
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy the custom index.html from the current directory to the Nginx document root
+COPY index.html /usr/share/nginx/html/
+RUN cat /usr/share/nginx/html/index.html 
+ 
+# Expose port 80 for serving web traffic
 EXPOSE 80
+
+# Start Nginx when the container runs
+CMD ["nginx", "-g", "daemon off;"]
+
